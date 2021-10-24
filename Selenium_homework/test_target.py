@@ -1,5 +1,5 @@
 import time
-
+import constants
 from base import BaseCase
 from ui.locators import locators
 import pytest
@@ -9,14 +9,14 @@ class TestLogin(BaseCase):
 
     @pytest.mark.UI("UI")
     def test_login(self):
-        self.login("tester.tim.vk@gmail.com", "P@ssword!")
+        self.login(constants.LOGIN, constants.PASSWORD)
         assert self.find(locators.COMPANIES_LOCATOR)
 
 
 class TestLogout(BaseCase):
     @pytest.mark.UI
     def test_logout(self):
-        self.login("tester.tim.vk@gmail.com", "P@ssword!")
+        self.login(constants.LOGIN, constants.PASSWORD)
         self.logout()
 
         assert self.find(locators.SIGN_IN_LOCATOR)
@@ -25,9 +25,9 @@ class TestLogout(BaseCase):
 class TestProfileEdit(BaseCase):
     @pytest.mark.UI
     def test_edit_profile(self):
-        self.login("tester.tim.vk@gmail.com", "P@ssword!")
-        fio = 'Name Name Name'
-        phone = '89998889889'
+        self.login(constants.LOGIN, constants.PASSWORD)
+        fio = constants.FIO
+        phone = constants.PHONE_NUMBER
         self.click(locators.PROFILE_LOCATOR)
 
         fio_field = self.find(locators.FIO_LOCATOR)
@@ -60,7 +60,7 @@ class TestMovingBetweenPages(BaseCase):
     ])
     @pytest.mark.UI
     def test_transition_to_pages(self, locator, page_el_locator):
-        self.login("tester.tim.vk@gmail.com", "P@ssword!")
+        self.login(constants.LOGIN, constants.PASSWORD)
         self.click(locator)
         time.sleep(1)
         assert self.find(page_el_locator)
