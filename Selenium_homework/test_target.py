@@ -10,7 +10,7 @@ class TestLogin(BaseCase):
     @pytest.mark.UI("UI")
     def test_login(self):
         self.login("tester.tim.vk@gmail.com", "P@ssword!")
-        assert self.driver.current_url == 'https://target.my.com/dashboard'
+        assert self.find(locators.COMPANIES_LOCATOR)
 
 
 class TestLogout(BaseCase):
@@ -19,7 +19,7 @@ class TestLogout(BaseCase):
         self.login("tester.tim.vk@gmail.com", "P@ssword!")
         self.logout()
 
-        assert 'Войти' in self.driver.page_source
+        assert self.find(locators.SIGN_IN_LOCATOR)
 
 
 class TestProfileEdit(BaseCase):
@@ -48,23 +48,29 @@ class TestProfileEdit(BaseCase):
 
 class TestMovingBetweenPages(BaseCase):
 
-    @pytest.mark.parametrize('locator, url', [
+    @pytest.mark.parametrize('locator, page_el_locator', [
         pytest.param(
-            locators.SEGMENTS_LOCATOR, "https://target.my.com/segments/segments_list",
+            locators.SEGMENTS_LOCATOR, locators.SEGMENTS_ALIKE_LOCATOR,
             id='segments',
         ),
         pytest.param(
-            locators.STATISTICS_LOCATOR, "https://target.my.com/statistics/summary",
+            locators.STATISTICS_LOCATOR, locators.STATISTICS_DOOH_LOCATOR,
             id='statistics',
         ),
     ])
     @pytest.mark.UI
-    def test_transition_to_pages(self, locator, url):
+    def test_transition_to_pages(self, locator, page_el_locator):
         self.login("tester.tim.vk@gmail.com", "P@ssword!")
         self.click(locator)
         time.sleep(1)
-        cur_url = self.driver.current_url
-        self.logout()
-        assert cur_url == url
+        res : bool = False
+        try:
+            page_elem = self.find(page_el_locator)
+            res = True
+        except:
+            pass
+        finally:
+            self.logout()
+        assert res
 
 
