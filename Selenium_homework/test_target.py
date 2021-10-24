@@ -42,8 +42,8 @@ class TestProfileEdit(BaseCase):
 
         self.driver.refresh()
 
-        assert fio == self.find(locators.FIO_LOCATOR).get_attribute('value') and \
-               phone == self.find(locators.PHONE_LOCATOR).get_attribute('value')
+        assert fio == self.find(locators.FIO_LOCATOR).get_attribute('value')
+        assert phone == self.find(locators.PHONE_LOCATOR).get_attribute('value')
 
 
 class TestMovingBetweenPages(BaseCase):
@@ -63,14 +63,7 @@ class TestMovingBetweenPages(BaseCase):
         self.login("tester.tim.vk@gmail.com", "P@ssword!")
         self.click(locator)
         time.sleep(1)
-        res : bool = False
-        try:
-            page_elem = self.find(page_el_locator)
-            res = True
-        except:
-            pass
-        finally:
-            self.logout()
-        assert res
+        assert self.find(page_el_locator)
+        self.logout()
 
 
