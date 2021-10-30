@@ -22,4 +22,4 @@ class BaseCase:
         self.campaign_page: CampaignPage = request.getfixturevalue('campaign_page')
         self.segment_page: SegmentPage = request.getfixturevalue('segment_page')
 
-        self.logger.info('Первоначальная настройка завершена!')
+        self.logger.info('The initial setup is complete!')
