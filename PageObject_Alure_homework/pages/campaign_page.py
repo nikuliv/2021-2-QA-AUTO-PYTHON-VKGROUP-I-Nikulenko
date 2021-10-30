@@ -1,7 +1,6 @@
 import os
 import logging
 import allure
-import pyautogui
 from faker import Faker
 from selenium.webdriver import ActionChains
 
