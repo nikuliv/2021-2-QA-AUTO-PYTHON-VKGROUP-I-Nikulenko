@@ -18,9 +18,10 @@ class AuthorizedPageLocators:
 
 
 class CampaignPageLocators:
-    COVERAGE_LOCATOR = (By.XPATH, "//div[contains(@class, 'column-list-item') and contains(text(), 'Охват')]")
+    COVERAGE_LOCATOR = (By.XPATH, "//div[contains(@class, '_reach')]/"
+                                  "div[contains(@class, 'column-list-item__title')]")
     DOOH_LOCATOR = (By.XPATH, "//div[contains(@class, 'column-list-item') and contains(@class, '_dooh')]")
-    LINK_INPUT_LOCATOR = (By.XPATH, "//input[contains(@class, 'mainUrl-module-searchInput-1yPahG')]") #
+    LINK_INPUT_LOCATOR = (By.XPATH, "//input[contains(@class, 'mainUrl-module-searchInput-1yPahG')]")
     CAMPAIGN_NAME_LOCATOR = (By.XPATH, "//div[contains(@class, 'input_campaign-name')]/div[@class='input__wrap']/input")
     BANNER_IMAGE_LOCATOR = (By.XPATH, "//div[@id='patterns_banner_4']")
     IMAGE_LOCATOR = (By.XPATH, "//div[contains(@class, 'roles-module-uploadButton-ZO1MPT')]")
@@ -34,7 +35,7 @@ class CampaignPageLocators:
 
 
 class SegmentPageLocators:
-    SOCIAL_NETWORK_APPLICATIONS_LOCATOR = (By.XPATH, "//div[@cid='view356']")
+    SOCIAL_NETWORK_APPLICATIONS_LOCATOR = (By.XPATH, "//div[@class='adding-segments-modal__block-left js-sources-types']/div[8]")
     CHECKBOX_LOCATOR = (By.XPATH, "//input[@type='checkbox']")
     ADD_SEGMENT_LOCATOR = (By.XPATH, "//div[@class='adding-segments-modal__btn-wrap js-add-button']")
     SEGMENT_NAME_LOCATOR = (By.XPATH, "//div[contains(@class, 'input_create-segment-form')]/div/input")
