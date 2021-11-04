@@ -4,7 +4,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from base import BaseCase
 from ui.fixtures import *
-from constants import *
+from fields_data import LOGIN, PASSWORD, INVALID_LOGIN, WRONG_PASSWORD
 
 
 @allure.feature('UI Tests')
@@ -42,16 +42,17 @@ class TestSegment(BaseCase):
 
     @pytest.mark.UI
     def test_create_segment(self, login):
-
         segment_page = self.authorized_page.go_to_segment_page()
-        segment_name = segment_page.create_segment()
+        segment_name = segment_page.create_segment_name()
+        segment_page.create_segment(segment_name)
         assert segment_page.find((By.XPATH, segment_page.locators.SEGMENT_IN_TABLE_LOCATOR.format(segment_name)))
 
     @pytest.mark.UI
     def test_delete_segment(self, login):
 
         segment_page = self.authorized_page.go_to_segment_page()
-        segment_name = segment_page.create_segment()
+        segment_name = segment_page.create_segment_name()
+        segment_page.create_segment(segment_name)
         segment_page.delete_segment(segment_name)
         with pytest.raises(TimeoutException):
             assert segment_page.find((By.XPATH, segment_page.locators.SEGMENT_IN_TABLE_LOCATOR.format(segment_name)), timeout=2)

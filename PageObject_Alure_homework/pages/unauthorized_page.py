@@ -3,7 +3,7 @@ import allure
 from pages.base_page import BasePage
 from pages.authorized_page import AuthorizedPage
 from ui.locators.locators import UnauthorizedPageLocators
-from constants import LOGIN, PASSWORD
+from fields_data import LOGIN, PASSWORD
 
 logger = logging.getLogger('test')
 

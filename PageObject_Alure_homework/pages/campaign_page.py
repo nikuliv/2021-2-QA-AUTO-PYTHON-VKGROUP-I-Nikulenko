@@ -2,9 +2,7 @@ import os
 import logging
 import allure
 from faker import Faker
-from selenium.webdriver import ActionChains
-
-from constants import *
+from fields_data import CAMPAIGN_LINK, BUDGET_PER_DAY, DATE_FROM, DATE_TO
 from pages.base_page import BasePage
 from ui.locators.locators import CampaignPageLocators
 
@@ -44,7 +42,7 @@ class CampaignPage(BasePage):
         name = self.create_campaign_name()
         self.go_to_creation_campaign()
         self.click(self.locators.COVERAGE_LOCATOR)
-        self.send_message(self.locators.LINK_INPUT_LOCATOR, 'https://github.com/nikuliv')
+        self.send_message(self.locators.LINK_INPUT_LOCATOR, CAMPAIGN_LINK)
         self.send_message(self.locators.CAMPAIGN_NAME_LOCATOR, name)
         self.click(self.locators.BANNER_IMAGE_LOCATOR)
         self.upload(self.locators.UPLOAD_LOCATOR)

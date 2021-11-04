@@ -18,9 +18,8 @@ class SegmentPage(BasePage):
     def create_segment_name(self):
         return self.fake.bothify(text='segment-???-#########-???-###')
 
-    @allure.step('Segment creation')
-    def create_segment(self):
-        name = self.create_segment_name()
+    @allure.step('Segment creation {name}')
+    def create_segment(self, name):
         self.go_to_creation_segment()
         self.click(self.locators.SOCIAL_NETWORK_APPLICATIONS_LOCATOR)
         self.click(self.locators.CHECKBOX_LOCATOR)
@@ -28,8 +27,6 @@ class SegmentPage(BasePage):
         self.send_message(self.locators.SEGMENT_NAME_LOCATOR, name)
         self.click(self.locators.CREATE_SEGMENT_LOCATOR)
         logger.info(f'The segment {name} has been successfully created')
-
-        return name
 
     @allure.step('Deleting segment {name}')
     def delete_segment(self, name):

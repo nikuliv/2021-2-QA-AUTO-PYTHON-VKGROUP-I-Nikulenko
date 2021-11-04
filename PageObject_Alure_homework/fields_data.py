@@ -2,7 +2,7 @@
 LOGIN = "tester.tim.vk@gmail.com"
 PASSWORD = "P@ssword!"
 
-# Negative Test Constants
+# Negative Test Credits
 INVALID_LOGIN = "testertest"
 WRONG_PASSWORD = "Password"
 
@@ -15,3 +15,4 @@ BUDGET_PER_DAY = "100"
 
 # Other
 IMAGE_PATH = 'images/campaign.jpg'
+CAMPAIGN_LINK = "https://github.com/nikuliv"
