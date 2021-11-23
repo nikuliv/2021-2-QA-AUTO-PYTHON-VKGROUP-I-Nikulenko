@@ -1,0 +1,87 @@
+Total number of requests: 225133
+
+Total number of requests by type:
+122095 - GET
+102503 - POST
+528 - HEAD
+6 - PUT
+1 - g369g=%40eval%01%28base64_decode%28%24_POST%5Bz0%5D%29%29%3B&z0=QGluaV9zZXQoImRpc3BsYXlfZXJyb3JzIiwiMCIpO0BzZXRfdGltZV9saW1pdCgwKTtAc2V0X21hZ2ljX3F1b3Rlc19ydW50aW1lKDApO2VjaG8oIi0%2bfCIpOztlY2hvKCJlNTBiNWYyYjRmNjc1NGFmMDljYzg0NWI4YjU4ZTA3NiIpOztlY2hvKCJ8PC0iKTs7ZGllKCk7GET
+
+Top 10 most frequent requests:
+=====
+URL: /administrator/index.php
+Requests number: 103932.
+=====
+URL: /apache-log/access.log
+Requests number: 26336.
+=====
+URL: /
+Requests number: 6940.
+=====
+URL: /templates/_system/css/general.css
+Requests number: 4980.
+=====
+URL: /robots.txt
+Requests number: 3199.
+=====
+URL: http://almhuette-raith.at/administrator/index.php
+Requests number: 2356.
+=====
+URL: /favicon.ico
+Requests number: 2201.
+=====
+URL: /wp-login.php
+Requests number: 1644.
+=====
+URL: /administrator/
+Requests number: 1563.
+=====
+URL: /templates/jp_hotel/css/template.css
+Requests number: 1287.
+=====
+
+Top 5 largest requests with (4XX) response:
+=====
+URL: /index.php?option=com_phocagallery&view=category&id=4025&Itemid=53
+Response: 404
+Size: 1417
+IP: 189.217.45.73.
+=====
+URL: /index.php?option=com_phocagallery&view=category&id=7806&Itemid=53
+Response: 404
+Size: 1417
+IP: 189.217.45.73.
+=====
+URL: /index.php?option=com_phocagallery&view=category&id=%28SELECT%20%28CASE%20WHEN%20%289168%3D4696%29%20THEN%209168%20ELSE%209168%2A%28SELECT%209168%20FROM%20INFORMATION_SCHEMA.CHARACTER_SETS%29%20END%29%29&Itemid=53
+Response: 404
+Size: 1417
+IP: 189.217.45.73.
+=====
+URL: /index.php?option=com_phocagallery&view=category&id=%28SELECT%20%28CASE%20WHEN%20%281753%3D1753%29%20THEN%201753%20ELSE%201753%2A%28SELECT%201753%20FROM%20INFORMATION_SCHEMA.CHARACTER_SETS%29%20END%29%29&Itemid=53
+Response: 404
+Size: 1417
+IP: 189.217.45.73.
+=====
+URL: /index.php?option=com_easyblog&view=dashboard&layout=write
+Response: 404
+Size: 1397
+IP: 104.129.9.248.
+=====
+
+Top 5 users by the number of requests that ended with (5XX) response:
+=====
+IP: 189.217.45.73
+Requests number: 225
+=====
+IP: 82.193.127.15
+Requests number: 4
+=====
+IP: 91.210.145.36
+Requests number: 3
+=====
+IP: 194.87.237.6
+Requests number: 2
+=====
+IP: 198.38.94.207
+Requests number: 2
+=====
