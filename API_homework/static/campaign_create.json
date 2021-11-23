@@ -1,0 +1,19 @@
+{
+            "name": "",
+            "objective": "reach",
+            "package_id": 960,
+            "banners": [{
+                "urls": {
+                    "primary": {
+                        "id": 0
+                    }
+                },
+                "textblocks": {},
+                "content": {
+                    "image_240x400": {
+                        "id": 0
+                    }
+                },
+                "name": ""}
+            ]
+}

@@ -2,10 +2,10 @@ import os
 import requests
 import logging
 from urllib.parse import urljoin
-from faker import Faker
+import json
 
 logger = logging.getLogger('test')
-MAX_RESPONSE_LENGTH = 500
+MAX_RESPONSE_LENGTH = 700
 
 
 class ResponseStatusCodeException(Exception):
@@ -13,7 +13,6 @@ class ResponseStatusCodeException(Exception):
 
 
 class ApiClient:
-    fake = Faker()
 
     def __init__(self, base_url, email, password):
         self.base_url = base_url
@@ -53,6 +52,7 @@ class ApiClient:
 
     def _request(self, method, location, headers=None, data=None, json=None, files=None, expected_status=200):
         url = urljoin(self.base_url, location)
+        self.log_pre(url, headers, data, expected_status)
         response = self.session.request(method, url, headers=headers, data=data, json=json, files=files)
         self.log_post(response)
 
@@ -62,8 +62,7 @@ class ApiClient:
         return response
 
     def _get_csrf_token(self):
-        location = '/csrf/'
-        self._request('GET', location)
+        self._request('GET', '/csrf/')
         return self.session.cookies['csrftoken']
 
     def post_login(self):
@@ -71,26 +70,22 @@ class ApiClient:
 
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Referer': 'https://target.my.com/'
+            'Referer': self.base_url
         }
 
-        data = {
-            'email': self.email,
-            'password': self.password,
-            'continue': 'https://target.my.com/auth/mycom?state=target_login%3D1%26ignore_opener%3D1#email',
-            'failure': 'https://account.my.com/login/'
-        }
+        with open("static/login_data.json") as json_file:
+            data = json.load(json_file)
 
         result = self._request('POST', location, headers=headers, data=data)
         self.csrf_token = self._get_csrf_token()
 
         return result
 
-    def _get_banner_id(self):
+    def _get_banner_id(self, number):
         location = '/api/v2/campaign_objective/reach/urls.json?_=1619802478801'
         response = self._request('GET', location)
 
-        return response.json()['items'][0]['id']
+        return response.json()['items'][number]['id']
 
     def _post_upload_image(self):
         location = '/api/v2/content/static.json'
@@ -99,7 +94,7 @@ class ApiClient:
         file_path = file_path.encode('utf-8')
 
         headers = {
-            'X-CSRFToken': self._get_csrf_token()
+            'X-CSRFToken': self.csrf_token
         }
 
         files = {
@@ -112,43 +107,32 @@ class ApiClient:
 
     def post_campaign_create(self, name='test_campaign'):
         location = '/api/v2/campaigns.json'
+        banner_num = 0
 
         headers = {
-            'X-CSRFToken': self._get_csrf_token()
+            'X-CSRFToken': self.csrf_token
         }
 
-        data = {
-            'name': name,
-            'objective': 'reach',
-            'package_id': 960,
-            'banners': [{
-                'urls': {
-                    'primary': {
-                        'id': self._get_banner_id()
-                    }
-                },
-                'textblocks': {},
-                'content': {
-                    'image_240x400': {
-                        'id': self._post_upload_image()
-                    }
-                },
-                'name': ''}
-            ]
-        }
+        with open("static/campaign_create.json") as json_file:
+            data = json.load(json_file)
+
+        data["name"] = name
+        data["banners"][banner_num]["urls"]["primary"]["id"] = self._get_banner_id(banner_num)
+        data["banners"][banner_num]["content"]["image_240x400"]["id"] = self._post_upload_image()
 
         response = self._request('POST', location, headers=headers, json=data)
         return response.json()['id']
 
     def get_campaign(self, campaign_id):
         location = f'/api/v2/campaigns/{campaign_id}.json'
-        self._request('GET', location)
+        response = self._request('GET', location)
+        return response.status_code
 
     def post_campaign_delete(self, campaign_id):
         location = f'/api/v2/campaigns/{campaign_id}.json'
 
         headers = {
-            'X-CSRFToken': self._get_csrf_token()
+            'X-CSRFToken': self.csrf_token
         }
 
         data = {
@@ -157,31 +141,16 @@ class ApiClient:
 
         self._request('POST', location, headers=headers, json=data, expected_status=204)
 
-    def create_segment_name(self):
-        return self.fake.bothify(text='segment-???-#########-???-###')
-
     def post_segment_create(self, name='test_segment'):
-        location = 'api/v2/remarketing/segments.json?fields=relations__object_type,' \
-                   'relations__object_id,relations__params,relations_count,id,name,' \
-                   'pass_condition,created,campaign_ids,users,flags'
+        location = 'api/v2/remarketing/segments.json?fields=id,name'
 
         headers = {
-            'X-CSRFToken': self._get_csrf_token()
+            'X-CSRFToken': self.csrf_token
         }
 
-        data = {
-            "logicType": "or",
-            "name": name,
-            "pass_condition": 1,
-            "relations": [{
-                "object_type": "remarketing_player",
-                "params": {
-                    "type": "positive",
-                    "left": 365,
-                    "right": 0
-                }
-            }]
-        }
+        with open("static/campaign_delete.json") as json_file:
+            data = json.load(json_file)
+        data["name"] = name
 
         response = self._request('POST', location, headers=headers, json=data)
 
@@ -189,16 +158,17 @@ class ApiClient:
 
     def get_segment(self, segment_id):
         location = f'api/v2/remarketing/segments/{segment_id}' \
-                   f'/relations.json?fields=id,params,object_type,object_id&_=1618703524358'
+                   f'/relations.json'
+        response = self._request('GET', location)
 
-        self._request('GET', location)
+        return response.status_code
 
     def delete_segment(self, segment_id):
         location = f'api/v2/remarketing/segments/{segment_id}.json'
 
         headers = {
             'Referer': 'https://target.my.com/segments/segments_list',
-            'X-CSRFToken': self._get_csrf_token()
+            'X-CSRFToken': self.csrf_token
         }
 
         self._request('DELETE', location, headers=headers, expected_status=204)
