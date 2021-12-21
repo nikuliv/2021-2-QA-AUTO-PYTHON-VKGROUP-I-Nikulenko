@@ -5,6 +5,8 @@ import requests
 from flask import Flask, jsonify, request
 from requests.exceptions import ConnectionError
 
+import settings
+
 app_data = {}
 
 MOCK_RECONNECT_LIMIT = 5
@@ -21,7 +23,7 @@ def create_user():
     if app_data.get(name) is None:
         app_data[name] = phone
         data = {'name': name, 'phone_number': phone}
-        return jsonify(data), 201
+        return jsonify(data), 200
     else:
         return jsonify(f'User with name {name} already exists.'), 400
 
@@ -42,7 +44,7 @@ def change_user_phone_number():
         new_number = json.loads(request.data)['new_phone']
         app_data[name] = new_number
         data = {'name': name, 'phone_number': new_number}
-        return jsonify(data), 201
+        return jsonify(data), 200
     else:
         return jsonify(f'User with name {name} does not exist.'), 404
 
@@ -57,16 +59,16 @@ def delete_user():
         return jsonify(f'User with name {name} does not exist.'), 404
 
 
-def run_mock(host, port):
+def run_mock():
     server = threading.Thread(target=app.run, kwargs={
-        'host': host,
-        'port': port
+        'host': settings.MOCK_HOST,
+        'port': settings.MOCK_PORT
     })
     server.start()
 
     for i in range(MOCK_RECONNECT_LIMIT):
         try:
-            requests.get(f'http://{host}:{port}')
+            requests.get(f'http://{settings.MOCK_HOST}:{settings.MOCK_PORT}')
             break
         except ConnectionError:
             if i == MOCK_RECONNECT_LIMIT - 1:

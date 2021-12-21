@@ -5,7 +5,7 @@ import json
 RECONNECT_LIMIT = 5
 
 
-class SocketClient:
+class MockClient:
 
     def __init__(self, host, port):
         self.host = host

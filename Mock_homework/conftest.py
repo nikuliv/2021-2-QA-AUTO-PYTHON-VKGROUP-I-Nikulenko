@@ -1,12 +1,12 @@
 import pytest
 from mock import flask_mock
-from client.client import SocketClient
+from client.client import MockClient
 import settings
 
 
 @pytest.fixture(scope='session')
 def connect():
-    flask_mock.run_mock(host=settings.MOCK_HOST, port=settings.MOCK_PORT)
-    client = SocketClient(host=settings.APP_HOST, port=settings.APP_PORT)
+    flask_mock.run_mock()
+    client = MockClient(settings.MOCK_HOST, settings.MOCK_PORT)
     yield client
     client.get('/shutdown')

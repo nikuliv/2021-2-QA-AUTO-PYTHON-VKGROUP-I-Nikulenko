@@ -9,7 +9,7 @@ class TestPostRequests(MockBase):
 
     def test_create_user(self, connect):
         test_user, resp = self.create_user(connect)
-        assert resp['status_code'] == 201
+        assert resp['status_code'] == 200
 
         body = json.loads(resp['body'])
         assert body['name'] == test_user['name']
@@ -18,7 +18,7 @@ class TestPostRequests(MockBase):
     def test_create_existent_user(self, connect):
         # create
         test_user, resp = self.create_user(connect)
-        assert resp['status_code'] == 201
+        assert resp['status_code'] == 200
         # recreate
         resp = connect.post('/create_user', test_user)
         assert resp['status_code'] == 400
@@ -29,7 +29,7 @@ class TestGetRequests(MockBase):
     def test_get_phone_number(self, connect):
         # create
         test_user, resp = self.create_user(connect)
-        assert resp['status_code'] == 201
+        assert resp['status_code'] == 200
         # get number
         user_name = test_user.get('name')
         resp = connect.get(f'/get_phone/' + user_name)
@@ -49,7 +49,7 @@ class TestDeleteRequests(MockBase):
     def test_delete_user(self, connect):
         # create
         test_user, resp = self.create_user(connect)
-        assert resp['status_code'] == 201
+        assert resp['status_code'] == 200
         # delete
         resp = connect.delete('/delete_user', test_user)
         assert resp['status_code'] == 200
@@ -66,11 +66,11 @@ class TestPutRequests(MockBase):
     def test_change_phone_number(self, connect):
         # create
         test_user, resp = self.create_user(connect)
-        assert resp['status_code'] == 201
+        assert resp['status_code'] == 200
         # change number
         test_user['new_phone'] = create_user_phone_number()
         resp = connect.put('/change_phone', test_user)
-        assert resp['status_code'] == 201
+        assert resp['status_code'] == 200
 
         body = json.loads(resp['body'])
         assert body['phone_number'] == test_user['new_phone']
