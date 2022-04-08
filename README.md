@@ -1,2 +1,2 @@
 # 2021-2-QA-AUTO-PYTHON-VKGROUP-I-Nikulenko
-QA Automation, Mail.ru group course
+QA Automation, VK group course
